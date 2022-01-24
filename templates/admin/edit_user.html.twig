@@ -1,0 +1,60 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+
+<div class="d-flex align-items-center justify-content-center my-auto" style="height: 75vh;">
+  <div
+    class="row justify-content-center text-center g-0 h-75"
+    >
+    
+
+	{% if not form.vars.valid %}
+    <div class="col-sm-2">
+      <div class="alert alert-warning p-2" style="font-size: 10px">
+        {% for error in form.vars.errors|raw %}
+        <p>{{ error.origin.name }}: {{error.message}} </p>
+        {% endfor %}
+      </div>
+    </div>
+  	{% endif %}
+  
+    <div class="col-sm-8">
+      <div class="text-center mb-5">
+    	<p class="h3 text-center">Edit user <span class="h4 text-danger">{{ user.email }}</span>
+		</p>
+      	<p class="h6 text-center mt-3">
+      	  ...or if not, 
+      	  <a href="{{ path('admin_users') }}" class="btn btn-primary btn-sm">click!</a>
+      	</p>
+    </div>
+    {{ form_start(form) }}
+      
+      <div class="mb-3">
+        {{ form_label(form.roles) }}
+        {{ form_widget(form.roles) }}
+      </div>    
+      <div class="mb-3">
+        {{ form_label(form.isEnabled) }}
+        {{ form_widget(form.isEnabled) }}
+      </div>
+      <div class="mt-4">
+        {{ form_row(form.submit, {'attr': {
+                        'class': 'btn btn-primary btn-sm'
+                      }}
+            ) }}    
+        {{ form_end(form) }}
+      </div>
+    </div>
+    
+  {% if not form.vars.valid %}
+    <div class="col-sm-2">
+    </div>
+  {% endif %}
+  </div>
+
+  
+  
+</div>
+
+
+{% endblock %}

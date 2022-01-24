@@ -1,0 +1,101 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+	Insert product data
+{% endblock %}
+
+
+{% block customstylesheets %}
+	<style>
+		.error {
+			background: red !important;
+			display: inline;
+			font-size: 10px
+		}
+	</style>
+{% endblock %}
+
+{% block content %}
+		<div class="container" style="height: 75vh;">
+			<div class="row justify-content-center align-items-center g-0 h-100">
+
+				{% if not form.vars.valid %}
+
+				<div class="col-2 alert alert-danger" style="font-size:10px">
+					<h6 style="font-weight:bold; font-size: 12px">
+						Correct form
+					</h6>
+					<p>
+						{% for error in form.vars.errors|raw %}
+							{{ error.origin.name|upper }}
+							:
+							{{ error.message }}
+						</br>
+					{% endfor %}
+					</p>
+				</div>
+				{% endif %}
+
+
+				<div class="col col-lg-5 border text-center">
+					{{ form_start(form) }}
+
+
+					<div class="accordion" id="formAccordion">
+						<div class="accordion-item">
+							<h2 class="accordion-header" id="formAccordion-headingOne">
+								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#formAccordion-collapseOne" aria-expanded="false" aria-controls="formAccordion-collapseOne">
+									Product's name
+								</button>
+							</h2>
+							<div id="formAccordion-collapseOne" class="accordion-collapse collapse show" aria-labelledby="formAccordion-headingOne">
+								<div class="accordion-body">
+									{{form_widget(form.name)}}
+									<div class="error">
+										{# {{ form_errors(form.name) }} #}
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="accordion-item">
+							<h2 class="accordion-header" id="formAccordion-headingTwo">
+								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#formAccordion-collapseTwo" aria-expanded="false" aria-controls="formAccordion-collapseTwo">
+									Price
+								</button>
+							</h2>
+							<div id="formAccordion-collapseTwo" class="accordion-collapse collapse" aria-labelledby="formAccordion-headingTwo">
+								<div class="accordion-body">
+									{{ form_widget(form.price) }}
+									{# {{ form_errors(form.name) }} #}
+								</div>
+							</div>
+						</div>
+
+						<div class="accordion-item">
+							<h2 class="accordion-header" id="formAccordion-headingThree">
+								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#formAccordion-collapseThree" aria-expanded="false" aria-controls="formAccordion-collapseThree">
+									Stock
+								</button>
+							</h2>
+							<div id="formAccordion-collapseThree" class="accordion-collapse collapse" aria-labelledby="formAccordion-headingThree">
+								<div class="accordion-body">
+									{{ form_widget(form.stock)}}
+									{# {{ form_errors(form.name) }} #}
+								</div>
+							</div>
+						</div>
+					</div>
+					{{ form_row(form.submit, {'attr': {
+											'class': 'btn btn-primary mt-5'
+										}}
+					) }}
+					{{ form_end(form) }}
+				</div>
+
+				{% if not form.vars.valid %}
+				<div class="col-2"></div>
+				{% endif %}
+			</div>
+		</div>
+{% endblock %}

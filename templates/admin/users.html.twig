@@ -1,0 +1,128 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin
+{% endblock %}
+
+{% block content %}
+{% for message in app.flashes('notice-edit-user') %}
+        <div class="alert alert-success text-center">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+<div class="row justify-content-center align-items-center g-0 h-100">
+	<div class="col-sm-8 d-flex justify-content-between mt-5">
+		<div class="count">
+			<p style="line-height:35px;">
+				<span style=" font-weight:bold">Users:
+				</span>
+				{{ users.getTotalItemCount }}
+			</p>
+
+		</div>
+		<div>
+			{{ knp_pagination_filter(users, {
+					                'u.email': 'Email',
+										}) }}
+		</div>
+
+	</div>
+	<div class=" col col-sm-8">
+
+
+		<table class="table table-sm" id="users">
+			<thead class="table-light">
+				<tr>
+
+					<th scope="col">
+						{{ knp_pagination_sortable(users, 'Email', 'u.email' ) }}
+
+					</th>
+					<th scope="col">
+						{{ knp_pagination_sortable(users, 'Roles', 'u.roles' ) }}
+					</th>
+					<th scope="col">
+						{{ knp_pagination_sortable(users, 'Is enabled?', 'u.isEnabled' ) }}
+					</th>
+					<th scope="col">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+
+				{% for user in users|raw %}
+
+					<tr>
+
+						<td>
+							{{user.email}}
+						</td>
+						<td>
+							{# {{user.roles|join(', ', ' and ')}} #}
+							{% if user.roles[0] is same as 'ROLE_ADMIN' %}
+								ADMIN
+							{% elseif user.roles[0] is same as 'ROLE_STOREMAN' %}
+								STOREMAN
+							{% else %}
+								USER								
+							{% endif %}
+							
+							
+						</td>
+						<td>
+							{% if user.isEnabled %}
+
+								<div class="form-check form-switch">
+									<input class="form-check-input" type="checkbox" data-account data-id={{user.id}} checked>
+									{# <label class="form-check-label" for="flexSwitchCheckChecked"></label> #}
+								</div>
+
+							{% else %}
+								<div class="form-check form-switch">
+									<input class="form-check-input" type="checkbox" data-account data-id={{user.id}}>
+									{# <label class="form-check-label" for="flexSwitchCheckDefault"></label> #}
+									
+								</div>
+
+							{% endif %}
+						</td>
+
+						<td>
+							<a data-bs-toggle="dropdown" role="button" aria-expanded="false" id="action_user" style= "text-decoration: none;">
+								<span class="nav-text text-dark" style="font-size: 20px; font-weight:bold;">
+									...
+								</span>
+							</a>
+							<ul class="dropdown-menu" aria-labelledby="action_user" style="font-size: 12px; min-width: 60px;">		
+								<li>
+									<a href={{ path('admin_edit_user', {id: user.id}) }} class="dropdown-item" data-action="edit">
+									Edit
+									</a>
+								</li>
+								<li>
+									<a href="#" class="dropdown-item" data-id={{user.id}} data-action="delete">
+									Delete
+									</a>
+								</li>
+							</ul>
+
+							
+							
+
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</p>
+</div>
+<div class="col-sm-8 d-flex justify-content-end mt-5">
+
+	<div class="navigation" style="line-height:15px">
+
+		{{ knp_pagination_render(users) }}
+	</div>
+
+
+</div>
+</div>
+{% endblock %}

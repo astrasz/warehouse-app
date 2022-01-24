@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+
+{% block content %}
+<div class="d-flex align-items-center justify-content-center my-auto" style="height: 75vh;">
+  <div
+    class="row align-items-center justify-content-center text-center g-0"
+    >
+    <div class="text-center mb-5">
+    <p class="h3 text-center">Edit data</p>
+      <p class="h6 text-center">
+        ...or if not, 
+        <a href="{{ path('show') }}" class="btn btn-primary btn-sm">click!</a>
+      </p>
+    </div>
+
+{% if not form.vars.valid %}
+    <div class="col-sm-2">
+      <div class="alert alert-warning p-2" style="font-size: 10px">
+        {% for error in form.vars.errors|raw %}
+        <p>{{ error.origin.name }}: {{error.message}} </p>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+  
+    <div class="col-sm-8">
+      
+    {{ form_start(form) }}
+      <div class="mb-3">
+        {{form_label(form.name, null, {'label_attr': {'class': 'control-label'
+        }})}}
+        {{ form_widget(form.name, {'attr': {'type': 'text', 'inputmode': 'numeric'
+        }})}}
+      </div>
+      <div class="mb-3">
+        {{ form_label(form.price) }}
+        {{ form_widget(form.price) }}
+      </div>    
+      <div class="mb-3">
+        {{ form_label(form.stock) }}
+        {{ form_widget(form.stock) }}
+      </div>
+      <div class="mt-4">
+        {{ form_row(form.submit, {'attr': {
+                        'class': 'btn btn-primary btn-sm'
+                      }}
+            ) }}    
+        {{ form_end(form) }}
+      </div>
+    </div>
+    
+  {% if not form.vars.valid %}
+    <div class="col-sm-2">
+    </div>
+  {% endif %}
+  </div>
+
+  
+  
+</div>
+
+{% endblock %}

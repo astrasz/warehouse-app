@@ -1,0 +1,130 @@
+{% extends "base.html.twig" %}
+
+
+{% block content %}
+	
+	{% for message in app.flashes('notice-edit-user') %}
+        <div class="alert alert-success text-center">
+            {{ message }}
+        </div>
+    {% endfor %}
+	{% for message in app.flashes('notice-edit') %}
+        <div class="alert alert-success text-center">
+            {{ message }}
+        </div>
+    {% endfor %}
+	{% for message in app.flashes('notice-delete') %}
+        <div class="alert alert-success text-center">
+            {{ message }}
+        </div>
+    {% endfor %}
+	{% for message in app.flashes('notice-save') %}
+        <div class="alert alert-success text-center">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+<div class="row justify-content-center align-items-center g-0 h-100">
+	<div class="col-12 col-lg-10 d-flex justify-content-between mt-5">
+		<div class="count">
+			<p style="line-height:35px;">
+				<span style=" font-weight:bold">Products:
+				</span>
+				{{ products.getTotalItemCount }}
+			</p>
+
+		</div>
+		<div>
+			{{ knp_pagination_filter(products, {
+					                'p.name': 'Name',
+										}) }}
+		</div>
+
+	</div>
+	<div class=" col col-lg-10">
+		<table class="table table-hover table-bordered" id="products">
+			<thead>
+				<tr>
+				{% if is_granted("ROLE_STOREMAN") %}
+					<th scope="row" style="width: 10%">Select</th>
+				{% endif %}
+					<th scope="row">
+						{{ knp_pagination_sortable(products, '#', 'p.id' ) }}
+					</th>
+					<th scope="col">
+						{{ knp_pagination_sortable(products, 'Name', 'p.name' ) }}
+
+					</th>
+					<th scope="col">
+						{{ knp_pagination_sortable(products, 'Price', 'p.price' ) }}
+					</th>
+					<th scope="col">
+						{{ knp_pagination_sortable(products, 'Stock', 'p.stock' ) }}
+					</th>
+					{% if is_granted('ROLE_STOREMAN') %}
+					<th scope="col" style="width: 10%"></th>
+					<th scope="col" style="width: 10%"></th>
+					{% endif %}
+					
+
+
+				</tr>
+			</thead>
+			<tbody>
+				{# {% set number = products.getPaginationData.totalCount %} #}
+				{% for product in products|raw %}
+				{# {% set number = number - 1 %} #}
+					<tr>
+					{% if is_granted("ROLE_STOREMAN") %}
+						<th scope="row" class="text-center">  
+							<input name="item-selector" class="form-check-input" type="checkbox" data-id="{{product.id}}">
+						</th>
+					{% endif %}
+						<th scope="row">
+							{{ product.id }} 
+						</th>
+						<td>
+							{{product.name}}
+						</td>
+						<td>
+							{{product.price}}
+						</td>
+						<td>
+							{{product.stock}}
+						</td>
+						{% if is_granted('ROLE_STOREMAN') %}
+						<td class="text-center">
+						<a href="{{ path('store_edit_product', {'id': product.id}) }}" class="btn btn-sm btn-warning px-4 d-inline" id="showEditBtn">Edit</a>
+						</td>
+						<td class="text-center">
+						<button class="btn btn-sm btn-danger px-3 d-inline" data-id="{{product.id}}">Delete</button>
+						</td>
+						{% endif %}
+
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	<div class="col-12 col-lg-10 d-flex justify-content-between mt-5">
+	{% if is_granted("ROLE_STOREMAN") %}
+		<button id="export-button" class="btn btn-primary btn-sm px-2 py-1 h-25">Export CSV</button>
+	{% endif %}
+		<div class="navigation">
+			<select class="form-select form-selec-sm" aria-label=".form-select-sm " style="line-height:15px;" name="maxProductsPerPage" id="maxproductsperpage"/>
+				<option value="{{ maxProductsPerPage }}" selected>{{ maxProductsPerPage }}</option>
+				<option value="5" id="5">5</option>
+				<option value="15" id="15">15</option>
+				<option value="30" id="30">30</option>
+			</select>
+		</div>
+		<div class="navigation" style="line-height:15px">
+
+			{{ knp_pagination_render(products) }}
+		</div>
+
+
+	</div>
+</div>
+{% endblock %}
+
